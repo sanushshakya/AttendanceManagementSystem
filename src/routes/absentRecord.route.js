@@ -1,0 +1,107 @@
+const router = require("express").Router();
+const { checkAuth } = require("../middlewares/auth.middleware");
+
+const absentRecordController = require("../controllers/absentRecord.controller");
+
+/**
+ * @swagger
+ *
+ * /absent-records:
+ *   get:
+ *     tags: [Absent]
+ *     summary: get all attendance records
+ *     parameters:
+ *         - name: limit
+ *           in: query
+ *           description: limit of data
+ *           type: integer
+ *
+ *         - name: page
+ *           in: query
+ *           description: page number
+ *           type: integer
+ *
+ *         - name: from
+ *           in: query
+ *           description: from date
+ *           type: string
+ *
+ *         - name: till
+ *           in: query
+ *           description: till date
+ *           type: string
+ *
+ *         - name: staff_id
+ *           in: query
+ *           description: filter by staff id
+ *           type: integer
+ *     responses:
+ *         '200':
+ *             description: absent records
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                      type: object
+ *                      properties:
+ *                          data:
+ *                              type: array
+ *                              items:
+ *                                  type: object
+ *                                  properties:
+ *                                      id:
+ *                                          type: integer
+ *                                          example: 1
+ *                                      staff_id:
+ *                                          type: integer
+ *                                          example: 1
+ *                                      date:
+ *                                          type: string
+ *                                          example: 2022-03-03T06:00:00.000Z
+ *                                      created_at:
+ *                                          type: string
+ *                                          example: 2022-03-03T06:00:00.000Z
+ *                                      updated_at:
+ *                                          type: string
+ *                                          example: 2022-03-03T06:00:00.000Z
+ *         '500':
+ *             description: internal server error
+ *
+ *
+ * /absent-records/{id}:
+ *   get:
+ *     tags: [Absent]
+ *     summary: get attendance record by id
+ *     responses:
+ *         '200':
+ *             description: absent record by id
+ *             content:
+ *                 application/json:
+ *                     schema:
+ *                      type: object
+ *                      properties:
+ *                          data:
+ *                              type: object
+ *                              properties:
+ *                                  id:
+ *                                      type: integer
+ *                                      example: 1
+ *                                  staff_id:
+ *                                      type: integer
+ *                                      example: 1
+ *                                  date:
+ *                                      type: string
+ *                                      example: 2022-03-03T06:00:00.000Z
+ *                                  created_at:
+ *                                      type: string
+ *                                      example: 2022-03-03T06:00:00.000Z
+ *                                  updated_at:
+ *                                      type: string
+ *                                      example: 2022-03-03T06:00:00.000Z
+ *         '500':
+ *             description: internal server error
+ */
+
+router.get("/", checkAuth(), absentRecordController.getAll);
+router.get("/:id", checkAuth(), absentRecordController.get);
+
+module.exports = { absentRecordRouter: router };
